@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Compare debt repayment strategies, stress-test your budget and understand the trade-offs with Vantage." />
+    <meta name="theme-color" content="#f7f2e9" />
+    <title>Vantage | Debt Freedom Strategy Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#planner">Skip to planner</a>
+
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="Vantage home">
+        <span class="wordmark-symbol" aria-hidden="true">V</span>
+        <span>Vantage</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#planner">Planner</a>
+        <a href="#comparison">Strategies</a>
+        <a href="#stress">Stress test</a>
+      </nav>
+      <span class="privacy-label">Runs locally in your browser</span>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="overline">EXPLAINABLE BFSI DECISION ENGINE</p>
+          <h1 id="hero-title">Build a repayment plan you can actually finish.</h1>
+          <p class="hero-lede">Model several debts together, compare payoff strategies and test whether your plan survives a difficult month.</p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#planner">Start with sample data</a>
+            <button class="text-action" id="clear-plan" type="button">Clear all data</button>
+          </div>
+        </div>
+        <aside class="hero-note" aria-label="Important project limitation">
+          <span class="note-number">01</span>
+          <div>
+            <strong>Planning tool, not financial advice</strong>
+            <p>Results use the balances, rates and budget you enter. They do not connect to a bank or credit bureau.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="planner-section" id="planner" aria-labelledby="planner-title">
+        <div class="section-heading">
+          <div>
+            <p class="overline">STEP 1 · CASH-FLOW PROFILE</p>
+            <h2 id="planner-title">Set your monthly limits</h2>
+          </div>
+          <button class="secondary-button" id="restore-sample" type="button">Restore sample</button>
+        </div>
+
+        <div class="profile-grid">
+          <label>
+            Monthly take-home income
+            <span class="money-input"><span aria-hidden="true">₹</span><input id="monthly-income" type="number" min="1" step="1000" value="90000" /></span>
+          </label>
+          <label>
+            Essential monthly expenses
+            <span class="money-input"><span aria-hidden="true">₹</span><input id="essential-expenses" type="number" min="0" step="1000" value="42000" /></span>
+          </label>
+          <label>
+            Total debt repayment budget
+            <span class="money-input"><span aria-hidden="true">₹</span><input id="monthly-budget" type="number" min="1" step="500" value="30000" /></span>
+          </label>
+          <div class="margin-card" aria-live="polite">
+            <span>Cash left after essentials and debt</span>
+            <strong id="cash-margin">₹18,000</strong>
+            <small id="margin-message">A positive buffer protects the plan from small shocks.</small>
+          </div>
+        </div>
+
+        <div class="debt-heading">
+          <div>
+            <p class="overline">STEP 2 · DEBT PORTFOLIO</p>
+            <h2>Add every active balance</h2>
+          </div>
+          <button class="secondary-button" id="add-debt" type="button">+ Add debt</button>
+        </div>
+
+        <div class="debt-table-wrap">
+          <table class="debt-table">
+            <thead>
+              <tr>
+                <th scope="col">Account</th>
+                <th scope="col">Type</th>
+                <th scope="col">Balance</th>
+                <th scope="col">APR</th>
+                <th scope="col">Minimum</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="debt-rows"></tbody>
+          </table>
+        </div>
+        <p class="form-error" id="form-error" role="alert"></p>
+      </section>
+
+      <section class="recommendation-section" aria-labelledby="recommendation-title">
+        <div class="recommendation-copy">
+          <p class="overline">VANTAGE RECOMMENDATION</p>
+          <h2 id="recommendation-title">The model recommends <span id="recommended-strategy">Avalanche</span></h2>
+          <p>The recommendation is generated from rate spread, balance distribution and available cash margin. Every reason remains visible.</p>
+        </div>
+        <div class="confidence-block">
+          <div class="confidence-top"><span>Model confidence</span><strong id="confidence-value">—</strong></div>
+          <div class="confidence-track"><span id="confidence-bar"></span></div>
+          <ul id="recommendation-reasons"></ul>
+        </div>
+      </section>
+
+      <section class="comparison-section" id="comparison" aria-labelledby="comparison-title">
+        <div class="section-heading comparison-heading">
+          <div>
+            <p class="overline">STEP 3 · STRATEGY COMPARISON</p>
+            <h2 id="comparison-title">Three routes to the same finish line</h2>
+            <p>Choose based on the trade-off you value—not a hidden approval score.</p>
+          </div>
+          <fieldset class="strategy-control">
+            <legend class="sr-only">Selected repayment strategy</legend>
+            <label><input type="radio" name="strategy" value="avalanche" checked /><span>Avalanche</span></label>
+            <label><input type="radio" name="strategy" value="snowball" /><span>Snowball</span></label>
+            <label><input type="radio" name="strategy" value="balanced" /><span>Balanced</span></label>
+          </fieldset>
+        </div>
+
+        <div class="strategy-cards" id="strategy-cards" aria-live="polite"></div>
+
+        <div class="projection-card">
+          <div class="projection-summary">
+            <div>
+              <span>Selected plan</span>
+              <strong id="selected-name">Avalanche</strong>
+            </div>
+            <div>
+              <span>Debt-free estimate</span>
+              <strong id="selected-duration">—</strong>
+            </div>
+            <div>
+              <span>Projected interest</span>
+              <strong id="selected-interest">—</strong>
+            </div>
+          </div>
+          <div class="chart-title">
+            <span>Remaining balance over time</span>
+            <small id="chart-caption">Projection based on the current monthly budget</small>
+          </div>
+          <div class="balance-chart" id="balance-chart" role="img" aria-label="Remaining debt balance projection"></div>
+        </div>
+      </section>
+
+      <section class="stress-section" id="stress" aria-labelledby="stress-title">
+        <div class="stress-intro">
+          <p class="overline">STEP 4 · RESILIENCE CHECK</p>
+          <h2 id="stress-title">What happens in a difficult month?</h2>
+          <p>Reduce income or add an unexpected expense. Vantage tests whether the chosen repayment commitment still fits.</p>
+        </div>
+        <div class="stress-controls">
+          <label>
+            <span>Temporary income drop <strong id="income-drop-label">15%</strong></span>
+            <input id="income-drop" type="range" min="0" max="50" step="5" value="15" />
+          </label>
+          <label>
+            <span>Unexpected monthly expense <strong id="expense-shock-label">₹5,000</strong></span>
+            <input id="expense-shock" type="range" min="0" max="30000" step="1000" value="5000" />
+          </label>
+        </div>
+        <div class="stress-result" aria-live="polite">
+          <div class="stress-status"><span>PLAN STATUS</span><strong id="stress-status">—</strong></div>
+          <div><span>Income after shock</span><strong id="stressed-income">—</strong></div>
+          <div><span>Buffer after debt payment</span><strong id="stressed-buffer">—</strong></div>
+          <p id="stress-advice">Adjust the controls to test the plan.</p>
+        </div>
+      </section>
+
+      <section class="decision-section" aria-labelledby="decision-title">
+        <div>
+          <p class="overline">DECISION NOTES</p>
+          <h2 id="decision-title">Leave with a plan, not just a number.</h2>
+          <p id="decision-summary">Complete your portfolio to generate a plain-language summary.</p>
+        </div>
+        <div class="decision-actions">
+          <button class="primary-button" id="save-plan" type="button">Save plan on this device</button>
+          <button class="secondary-button" id="print-plan" type="button">Print summary</button>
+          <span id="save-message" role="status"></span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Vantage · BFSI capstone prototype</span>
+      <span>Educational projections only · No bank connection · No credit decision</span>
+    </footer>
+
+    <template id="debt-row-template">
+      <tr>
+        <td data-label="Account"><input class="debt-name" type="text" maxlength="40" aria-label="Debt account name" /></td>
+        <td data-label="Type">
+          <select class="debt-type" aria-label="Debt type">
+            <option>Credit card</option>
+            <option>Personal loan</option>
+            <option>Education loan</option>
+            <option>Vehicle loan</option>
+            <option>BNPL</option>
+            <option>Other</option>
+          </select>
+        </td>
+        <td data-label="Balance"><span class="compact-money"><span aria-hidden="true">₹</span><input class="debt-balance" type="number" min="0" step="1000" aria-label="Outstanding balance" /></span></td>
+        <td data-label="APR"><span class="compact-suffix"><input class="debt-apr" type="number" min="0" max="60" step="0.1" aria-label="Annual interest rate" /><span aria-hidden="true">%</span></span></td>
+        <td data-label="Minimum"><span class="compact-money"><span aria-hidden="true">₹</span><input class="debt-minimum" type="number" min="0" step="500" aria-label="Minimum monthly payment" /></span></td>
+        <td data-label="Action"><button class="remove-debt" type="button" aria-label="Remove debt">Remove</button></td>
+      </tr>
+    </template>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
